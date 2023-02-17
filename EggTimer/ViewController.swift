@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
   
@@ -19,7 +20,8 @@ class ViewController: UIViewController {
   var seconds = 1
   var eggTime = 0
   var timer = Timer()
-  
+  var audioPlayer: AVAudioPlayer?
+
   @IBOutlet weak var labelTop: UILabel!
   
   @IBOutlet weak var pvEggTimer: UIProgressView!
@@ -44,7 +46,18 @@ class ViewController: UIViewController {
       } else {
         self.labelTop.text = "Done!"
         self.pvEggTimer.progress = 1.0
+        
         Timer.invalidate()
+        
+        if let path = Bundle.main.path(forResource: "alarm_sound", ofType: "mp3") {
+            do {
+              self.audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: path))
+              self.audioPlayer?.play()
+            } catch {
+                print("ERROR")
+            }
+        }
+
       }
     }
   }
