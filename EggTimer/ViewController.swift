@@ -11,14 +11,25 @@ import UIKit
 class ViewController: UIViewController {
   
   let eggTimes : [String : Int] = [
-    "Soft": 5,
-    "Medium": 7,
-    "Hard": 12
+    "Soft": 300,
+    "Medium": 420,
+    "Hard": 720
   ]
   
+  var remainingSeconds = 0
+  
   @IBAction func hardnessSelected(_ sender: UIButton) {
-    guard let hardness = sender.currentTitle else {return}
+    guard let eggTime = eggTimes[sender.currentTitle!] else {return}
     
-    print(eggTimes[hardness]!)
+    remainingSeconds = eggTime
+    
+    Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
+      if self.remainingSeconds > 0 {
+        print ("\(self.remainingSeconds) seconds")
+        self.remainingSeconds -= 1
+      } else {
+        Timer.invalidate()
+      }
+    }
   }
 }
